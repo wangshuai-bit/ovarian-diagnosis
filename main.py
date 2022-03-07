@@ -17,16 +17,6 @@ import argparse
 import pickle
 import random
 from models import *
-from models.googlenet_atten import *
-from models.resnet_attention import *
-from models.resnet_layer_attention import *
-from models.resnet_atten_sknet import *
-from models.shufflenet_atten import *
-from models.senet_res import *
-from models.resnet_atten_cbam import *
-from models.resnet_FPN import *
-from models.resnet_eca import *
-from models.resnet_asff import *
 from models.resnet_asff_eca import *
 from models.resnet_asff_a2net import *
 from models.resnet_asff_sknet import *
@@ -43,7 +33,7 @@ from sklearn.manifold import TSNE
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "3"
-def setup_seed(seed=6):
+def setup_seed(seed=0):
     random.seed(seed)
     os.environ['PYTHONHASHSEED']=str(seed)
     torch.manual_seed(seed)
@@ -221,7 +211,6 @@ def train(epoch):
     score_list = []
     label_list = []
     predicted_list = []
-    level3_list = []
 
     for batch_idx, (inputs, targets) in enumerate(trainloader):
         inputs, targets = inputs.to(device), targets.to(device)
@@ -251,26 +240,6 @@ def train(epoch):
 
         progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
                      % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
-
-        if epoch == 59:
-            score_tmp = outputs
-            score_list.extend(score_tmp.detach().cpu().numpy())
-            label_list.extend(targets.cpu().numpy())
-            predicted_list.extend(predicted.cpu().numpy())
-        if epoch == 59:
-            ''''''
-            level3_numpy = level3.detach().cpu().numpy()
-            level3_list.extend(level3_numpy)
-
-    if epoch == 59:
-        labels = label_list
-        '''
-        print("now show layer3...")
-        plt.figure("layer3")
-        tsne_3 = TSNE(perplexity=30, n_components=2, init='random', n_iter=1000)
-        low_dim_embs_3 = tsne_3.fit_transform(level3_list)
-        plot_with_labels(low_dim_embs_3, labels, "layer 3, our method")
-        '''
 
 
 def test(epoch):
