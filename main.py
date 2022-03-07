@@ -139,22 +139,9 @@ testloader = torch.utils.data.DataLoader(
 
 # Model
 print('==> Building model..')
-#net = VGG('VGG19')
+
 net = ResNet18_asff_res()
-#net = FPN50()
-#net = PreActResNet18()
-#net = GoogLeNet()
-#net = DenseNet121()
-# net = ResNeXt29_2x64d()
-# net = MobileNet()
-# net = MobileNetV2()
-# net = DPN92()
-#net = ShuffleNetG3_atten()
-#net = SENet18_res()
-#net = ShuffleNetV2(1.5)
-#net = EfficientNetB0()
-# net = RegNetX_200MF()
-#net = SimpleDLA()
+
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
