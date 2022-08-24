@@ -1,4 +1,4 @@
-'''Train CIFAR10 with PyTorch.'''
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -46,7 +46,7 @@ def setup_seed(seed=0):
 
 setup_seed()
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
-parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
+parser.add_argument('--lr', default=1e-5, type=float, help='learning rate')
 parser.add_argument('--resume', '-r', action='store_true',default=False,
                     help='resume from checkpoint')
 args = parser.parse_args()
@@ -159,9 +159,7 @@ if args.resume:
     print("load the model")
 
 criterion = nn.CrossEntropyLoss()
-#optimizer = optim.SGD(net.parameters(), lr=args.lr,
-#                      momentum=0.9, weight_decay=5e-4)
-#scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
+
 optimizer = torch.optim.Adam(net.parameters(),lr=args.lr,betas=(0.9,0.99),weight_decay=0.0001)
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer=optimizer,step_size=20,gamma=0.1,last_epoch=-1)
 
